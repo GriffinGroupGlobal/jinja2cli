@@ -2,15 +2,19 @@
 
 ## template
 $ cat template.j2
+```text
 {{ title }}
  - {{ DATA1 }} 
  - {{ DATA2 }} 
+```
 
 ## data
 $ cat data.yml
+```text
 title: Matt
 DATA1: Hello!
 DATA2: Dogs are great!
+```
 
 ## render
 Then you can render this template by executing
