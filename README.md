@@ -26,5 +26,5 @@ My Title
 ```
 
 # Credits
-[docker-jinja2cli](https://hub.docker.com/r/vikingco/jinja2cli/)
-[jinja-2cli](https://github.com/mattrobenolt/jinja2-cli)
+- [docker-jinja2cli](https://hub.docker.com/r/vikingco/jinja2cli/)
+- [jinja-2cli](https://github.com/mattrobenolt/jinja2-cli)
