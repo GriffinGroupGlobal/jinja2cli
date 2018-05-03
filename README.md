@@ -20,7 +20,7 @@ DATA2: Dogs are great!
 Then you can render this template by executing
 
 ```text
-$ docker run -v $(pwd):/data vikingco/jinja2cli template.j2 data.yml > out
+$ docker run -v $(pwd):/data g3dev/jinja2cli template.j2 data.yml > out
 $ cat out
 My Title
 ```
