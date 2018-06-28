@@ -5,8 +5,14 @@ RUN groupadd --gid 1000 python \
   && useradd --uid 1000 --gid python --shell /bin/bash --create-home python
 
 RUN set -xe \
+    && apt-get update \
+    && apt-get install -y python-yaml \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN set -xe \
     && pip install --upgrade pip \
-    && pip install jinja2-cli pyyaml \
+#    && pip install jinja2-cli pyyaml \
+    && pip install jinja2-cli  \
     && find /usr/local \
         \( -type d -a -name test -o -name tests \) \
         -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
