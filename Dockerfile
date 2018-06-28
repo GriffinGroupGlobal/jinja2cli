@@ -1,16 +1,10 @@
-FROM python:3.7.0b3-alpine3.7
+FROM python:3.7.0b5-stretch
 LABEL maintainer="g3-dev@griffingroupglobal.com"
 
-ARG UID=1000
-ARG GID=1000
-ARG USERNAME=python
+RUN groupadd --gid 1000 python \
+  && useradd --uid 1000 --gid python --shell /bin/bash --create-home python
 
 RUN set -xe \
-    && addgroup -g ${GID} ${USERNAME} \
-    && adduser -D -h /home/python -u ${UID} -G ${USERNAME} ${USERNAME}
-
-RUN set -xe \
-    && apk --no-cache add su-exec \
     && pip install --upgrade pip \
     && pip install jinja2-cli pyyaml \
     && find /usr/local \
@@ -20,8 +14,8 @@ RUN set -xe \
 
 RUN mkdir -p /pyrun
 
-COPY docker-entrypoint.sh /entrypoint
+COPY docker-entrypoint.sh /entrypoint.sh
 
-WORKDIR /data
-ENTRYPOINT [ "/entrypoint", "jinja2" ]
-CMD [ "--help" ]
+USER python
+
+CMD [ "/entrypoint.sh" ]

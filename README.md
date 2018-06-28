@@ -2,6 +2,7 @@
 
 ## template
 $ cat template.j2
+
 ```text
 {{ title }}
  - {{ DATA1 }} 
@@ -10,6 +11,7 @@ $ cat template.j2
 
 ## data
 $ cat data.yml
+
 ```text
 title: Matt
 DATA1: Hello!
@@ -20,10 +22,12 @@ DATA2: Dogs are great!
 Then you can render this template by executing
 
 ```text
-$ docker run -v $(pwd):/data g3dev/jinja2cli template.j2 data.yml > out
+$ docker run --rm -v `pwd`:/data --workdir=/data -e JINJA2CLI_TEMPLATE=template.j2 -e JINJA2CLI_DATA=data.yml -e JINJA2CLI_OUTFILE=out g3dev/jinja2cli
 $ cat out
 My Title
 ```
+
+Note: Using ENV variables instead of command line variables. Named paramters are more transferabble and also allows this to be used in CI setups.
 
 # Credits
 - [docker-jinja2cli](https://hub.docker.com/r/vikingco/jinja2cli/)

@@ -1,8 +1,3 @@
-#!/bin/sh
-set -e
+#!/bin/bash
 
-if [ $(id -u) -eq 0 ]; then
-    exec su-exec ${USERNAME} "$0" "$@"
-fi
-
-exec "$@"
+exec jinja2 $JINJA2CLI_TEMPLATE $JINJA2CLI_DATA > $JINJA2CLI_OUTFILE
