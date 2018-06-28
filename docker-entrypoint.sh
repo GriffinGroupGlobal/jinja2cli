@@ -1,3 +1,4 @@
 #!/bin/bash
 
+printenv
 exec jinja2 $JINJA2CLI_TEMPLATE $JINJA2CLI_DATA > $JINJA2CLI_OUTFILE
