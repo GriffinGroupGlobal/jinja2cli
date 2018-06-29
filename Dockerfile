@@ -1,10 +1,16 @@
-FROM python:3.7.0b5-stretch
+FROM python:3.7.0b5-alpine3.7
 LABEL maintainer="g3-dev@griffingroupglobal.com"
 
-RUN groupadd --gid 1000 python \
-  && useradd --uid 1000 --gid python --shell /bin/bash --create-home python
+ARG UID=1000
+ARG GID=1000
+ARG USERNAME=python
 
 RUN set -xe \
+    && addgroup -g ${GID} ${USERNAME} \
+    && adduser -D -h /home/${USERNAME} -u ${UID} -G ${USERNAME} ${USERNAME}
+
+RUN set -xe \
+    && apk --no-cache add su-exec \
     && pip install --upgrade pip \
     && pip install jinja2-cli pyyaml \
     && find /usr/local \

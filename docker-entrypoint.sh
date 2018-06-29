@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
-printenv
-exec jinja2 $JINJA2CLI_TEMPLATE $JINJA2CLI_DATA > $JINJA2CLI_OUTFILE
+set -e
+
+if [ $(id -u) -eq 0 ]; then
+    exec su-exec ${USERNAME} jinja2 $PLUGIN_TEMPLATE $PLUGIN_DATA > $PLUGIN_OUTFILE
+fi
+
+exec jinja2 $PLUGIN_TEMPLATE $PLUGIN_DATA > $PLUGIN_OUTFILE

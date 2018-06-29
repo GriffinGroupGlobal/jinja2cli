@@ -1,0 +1,12 @@
+pipeline:
+  docker:
+    image: plugins/docker
+    repo: g3dev/jinja2cli
+    tags:
+      - latest
+      - 0.1
+      - 0.1-alpine
+    secrets: [ docker_username, docker_password ]
+    when:
+       branch: master
+       event: [ push, tag ]
