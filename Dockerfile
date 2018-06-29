@@ -1,18 +1,18 @@
-FROM python:3.7.0b5-stretch
+FROM python:3.7.0b5-alpine3.7
 LABEL maintainer="g3-dev@griffingroupglobal.com"
 
-RUN groupadd --gid 1000 python \
-  && useradd --uid 1000 --gid python --shell /bin/bash --create-home python
+ARG UID=1000
+ARG GID=1000
+ARG USERNAME=python
 
 RUN set -xe \
-    && apt-get update \
-    && apt-get install -y python-yaml \
-    && rm -rf /var/lib/apt/lists/*
+    && addgroup -g ${GID} ${USERNAME} \
+    && adduser -D -h /home/${USERNAME} -u ${UID} -G ${USERNAME} ${USERNAME}
 
 RUN set -xe \
+    && apk --no-cache add su-exec \
     && pip install --upgrade pip \
-#    && pip install jinja2-cli pyyaml \
-    && pip install jinja2-cli  \
+    && pip install jinja2-cli pyyaml \
     && find /usr/local \
         \( -type d -a -name test -o -name tests \) \
         -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
