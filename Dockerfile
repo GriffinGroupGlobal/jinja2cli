@@ -22,6 +22,4 @@ RUN mkdir -p /pyrun
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
-USER python
-
 CMD [ "/entrypoint.sh" ]
