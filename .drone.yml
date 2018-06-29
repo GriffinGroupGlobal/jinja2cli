@@ -1,0 +1,10 @@
+pipeline:
+  docker:
+    image: plugins/docker
+    tags:
+      - latest
+      - 0.1
+      - 0.1-alpine
+    secrets: [ docker_username, docker_password ]
+    when:
+       branch: master
