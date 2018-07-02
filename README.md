@@ -5,8 +5,8 @@ $ cat template.j2
 
 ```text
 {{ title }}
- - {{ DATA1 }} 
- - {{ DATA2 }} 
+ - {{ DATA1 }}
+ - {{ DATA2 }}
 ```
 
 ## data
