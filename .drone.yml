@@ -1,5 +1,35 @@
 pipeline:
-  docker:
+#  dependencies:
+#    image: g3dev/nodedev:${NODE_VERSION}
+#    commands:
+#      - printenv
+#      - npm install
+#      - npm outdated
+#  vulnerabilities:
+#    image: g3dev/nodedev:${NODE_VERSION}
+#    commands:
+#      - echo "run 'npm audit' manually! due to https://github.com/npm/npm/issues/20564"
+## https://github.com/npm/npm/issues/20564
+##      - npm audit
+#  sourcelint:
+#    image: g3dev/lintjs
+#    pull: true
+  markdownlint:
+    image: g3dev/lintmd
+    pull: true
+#  build:
+#    image: g3dev/nodedev:${NODE_VERSION}
+#    commands:
+#      - npm run build
+#  docs:
+#    image: g3dev/nodedev:${NODE_VERSION}
+#    commands:
+#      - npm run build-docs
+#  test:
+#    image: g3dev/nodedev:${NODE_VERSION}
+#    commands:
+#      - npm run test
+  publish:
     image: plugins/docker
     repo: g3dev/jinja2cli
     tags:
@@ -10,3 +40,43 @@ pipeline:
     when:
        branch: master
        event: [ push, tag ]
+#  triggersdkdocs:
+#   image: plugins/downstream
+#   server: https://drone.g3dev.io
+#   fork: true
+#   secrets: [ downstream_token ]
+#   repositories:
+#     - GriffinGroupGlobal/gputil_sdkdocgen
+#   when:
+#     branch: master
+#     event: [ push, tag, deployment ]
+  notify-email:
+    image: drillster/drone-email
+    from: no-reply@griffingroupglobal.com
+    secrets: [ email_username, email_password, email_recipients, email_host ]
+    subject: >
+      drone.g3dev.io - [{{ build.status }}]
+      {{ repo.owner }}/{{ repo.name }}
+      ({{ commit.branch }} - {{ commit.link }})
+    when:
+      branch: master
+      status: [ success, failure ]
+      event: [ push, tag, deployment ]
+  notify-slack:
+    image: plugins/slack-blame
+    secrets: [ slack_token ]
+    channel: gravity_build
+    mapping:
+      MattAtG3: matt.jenks@griffingroupglobal.com
+    success_template: |
+      The build ${DRONE_REPO_NAME} was fixed by commit author @${DRONE_COMMIT_AUTHOR}! Thanks @{{slack.name}}
+    success_image_attachments:
+      - "http://i.imgur.com/TP4PIxc.jpg"
+    failure_template: |
+      The build ${DRONE_REPO_NAME} was broken by commit author @${DRONE_COMMIT_AUTHOR}! Blame @{{slack.name}}
+    failure_image_attachments:
+      - "https://raw.githubusercontent.com/drone-plugins/drone-slack-blame/master/memes/kittens_fail.jpg"
+    when:
+      branch: master
+      status: [ success, failure ]
+      event: [ push, tag, deployment ]
