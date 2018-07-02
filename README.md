@@ -28,7 +28,7 @@ My Title
 ```
 
 ## CI/CD
-This also doubles as a [drone][drone] plugin.
+This also doubles as a [drone][drone] plugin. Thus the name of the environment variables are important.
 
 Note: Using ENV variables instead of command line variables. Named parameters are more transferable and also allows this to be used in CI setups.
 
