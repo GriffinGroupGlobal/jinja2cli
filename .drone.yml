@@ -2,7 +2,6 @@ pipeline:
 #  dependencies:
 #    image: g3dev/nodedev:${NODE_VERSION}
 #    commands:
-#      - printenv
 #      - npm install
 #      - npm outdated
 #  vulnerabilities:
