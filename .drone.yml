@@ -37,7 +37,7 @@ pipeline:
       - 0.1-alpine
     secrets: [ docker_username, docker_password ]
     when:
-       branch: master
+#       branch: master
        event: [ push, tag ]
 #  triggersdkdocs:
 #   image: plugins/downstream
@@ -76,6 +76,6 @@ pipeline:
     failure_image_attachments:
       - "https://raw.githubusercontent.com/drone-plugins/drone-slack-blame/master/memes/kittens_fail.jpg"
     when:
-      branch: master
+#      branch: master
       status: [ success, failure ]
       event: [ push, tag, deployment ]

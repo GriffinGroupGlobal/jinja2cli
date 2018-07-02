@@ -27,8 +27,13 @@ $ cat out
 My Title
 ```
 
+## CI/CD
+This also doubles as a [drone][drone] plugin.
+
 Note: Using ENV variables instead of command line variables. Named parameters are more transferable and also allows this to be used in CI setups.
 
 # Credits
 - [docker-jinja2cli](https://hub.docker.com/r/vikingco/jinja2cli/)
 - [jinja-2cli](https://github.com/mattrobenolt/jinja2-cli)
+
+[drone]:https://docs.drone.io
