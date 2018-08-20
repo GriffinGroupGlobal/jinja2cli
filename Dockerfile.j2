@@ -1,5 +1,5 @@
-FROM python:3.7.0b5-alpine3.7
-LABEL maintainer="g3-dev@griffingroupglobal.com"
+FROM python:{{ python_version_long }}-{{ python_os }}{{ python_version_short }}
+LABEL maintainer="{{ maintainer }}"
 
 ARG UID=1000
 ARG GID=1000
