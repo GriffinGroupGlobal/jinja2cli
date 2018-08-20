@@ -1,0 +1,6 @@
+maintainer: g3-dev@griffingroupglobal.com
+python_version_long: 3.7.0b5
+python_version_short: 3.7
+python_os: alpine
+branch: __BRANCH__
+commit_sha: __SHA__

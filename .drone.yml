@@ -1,54 +1,37 @@
 pipeline:
-#  dependencies:
-#    image: g3dev/nodedev:${NODE_VERSION}
-#    commands:
-#      - npm install
-#      - npm outdated
-#  vulnerabilities:
-#    image: g3dev/nodedev:${NODE_VERSION}
-#    commands:
-#      - echo "run 'npm audit' manually! due to https://github.com/npm/npm/issues/20564"
-## https://github.com/npm/npm/issues/20564
-##      - npm audit
-#  sourcelint:
-#    image: g3dev/lintjs
-#    pull: true
   markdownlint:
     image: g3dev/lintmd
     pull: true
-#  build:
-#    image: g3dev/nodedev:${NODE_VERSION}
-#    commands:
-#      - npm run build
-#  docs:
-#    image: g3dev/nodedev:${NODE_VERSION}
-#    commands:
-#      - npm run build-docs
-#  test:
-#    image: g3dev/nodedev:${NODE_VERSION}
-#    commands:
-#      - npm run test
+  setup-builddata:
+    image: g3dev/nodedev
+    commands:
+    - cat build_data.yml.template | sed "s/__BRANCH__/${DRONE_COMMIT_BRANCH}/g" | sed "s/__SHA__/${DRONE_COMMIT_SHA}/g" > build_data.yml
+  build-dockerfile:
+    image: g3dev/jinja2cli
+    pull: true
+    template: Dockerfile.j2
+    data: build_data.yml
+    outfile: Dockerfile
+  build-tags-branch:
+    image: g3dev/jinja2cli
+    template: tags-branch.j2
+    data: build_data.yml
+    outfile: .tags
+    when:
+      exclude: [ master ]
+  build-tags-master:
+    image: g3dev/jinja2cli
+    template: tags-master.j2
+    data: build_data.yml
+    outfile: .tags
+    when:
+      branch: master
   publish:
     image: plugins/docker
     repo: g3dev/jinja2cli
-    tags:
-      - latest
-      - 0.1
-      - 0.1-alpine
     secrets: [ docker_username, docker_password ]
     when:
-       branch: master
        event: [ push, tag ]
-#  triggersdkdocs:
-#   image: plugins/downstream
-#   server: https://drone.g3dev.io
-#   fork: true
-#   secrets: [ downstream_token ]
-#   repositories:
-#     - GriffinGroupGlobal/gputil_sdkdocgen
-#   when:
-#     branch: master
-#     event: [ push, tag, deployment ]
   notify-email:
     image: drillster/drone-email
     from: no-reply@griffingroupglobal.com
