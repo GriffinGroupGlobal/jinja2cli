@@ -124,3 +124,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# tags auto-generated at build time
+.tags

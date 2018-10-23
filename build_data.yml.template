@@ -4,3 +4,6 @@ python_version_short: 3.7
 python_os: alpine
 branch: __BRANCH__
 commit_sha: __SHA__
+buildnum: __BUILDNUM__
+release_tag: __TAG__
+deploy_tag: __DEPLOY_TYPE__

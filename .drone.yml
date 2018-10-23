@@ -1,11 +1,23 @@
+clone:
+  git:
+    image: plugins/git
+    tags: true
 pipeline:
   markdownlint:
     image: g3dev/lintmd
     pull: true
-  setup-builddata:
-    image: g3dev/nodedev
+  setup-builddata-tag:
+    image: g3dev/nodedev:${NODE_VERSION}
     commands:
-    - cat build_data.yml.template | sed "s/__BRANCH__/${DRONE_COMMIT_BRANCH}/g" | sed "s/__SHA__/${DRONE_COMMIT_SHA}/g" > build_data.yml
+    - cat build_data.yml.template | sed "s/__BRANCH__/HEAD/g" | sed "s/__SHA__/${DRONE_COMMIT_SHA}/g" | sed "s/__BUILDNUM__/${DRONE_BUILD_NUMBER}/g" | sed "s/__DEPLOY_TYPE__//g" |  sed "s/__TAG__/`./cuttags.sh`/g" > build_data.yml
+    when:
+      event: [ tag ]
+  setup-builddata-alpha:
+    image: g3dev/nodedev:${NODE_VERSION}
+    commands:
+    - cat build_data.yml.template | sed "s/__BRANCH__/`git rev-parse --abbrev-ref HEAD`/g" | sed "s/__SHA__/${DRONE_COMMIT_SHA}/g" | sed "s/__BUILDNUM__/${DRONE_BUILD_NUMBER}/g" | sed "s/__DEPLOY_TYPE__/ALPHA-/g" |  sed "s/__TAG__/`git describe --abbrev=0 --tags | cut -d\- -f1`/g" > build_data.yml
+    when:
+      event: [ pull_request, push, deployment ]
   build-dockerfile:
     image: g3dev/jinja2cli
     pull: true
@@ -18,14 +30,24 @@ pipeline:
     data: build_data.yml
     outfile: .tags
     when:
-      exclude: [ master ]
+      event: [ pull_request, push, deployment ]
+      branch:
+        exclude: [ master, HEAD ]
   build-tags-master:
     image: g3dev/jinja2cli
     template: tags-master.j2
     data: build_data.yml
     outfile: .tags
     when:
-      branch: master
+      event: [ pull_request, push, deployment ]
+      branch: [ master ]
+  build-tags:
+    image: g3dev/jinja2cli
+    template: tags-tags.j2
+    data: build_data.yml
+    outfile: .tags
+    when:
+      event: [ tag ]
   publish:
     image: plugins/docker
     repo: g3dev/jinja2cli
