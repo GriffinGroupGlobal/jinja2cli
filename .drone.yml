@@ -9,13 +9,13 @@ pipeline:
   setup-builddata-tag:
     image: g3dev/nodedev:${NODE_VERSION}
     commands:
-    - cat build_data.yml.template | sed "s/__BRANCH__/HEAD/g" | sed "s/__SHA__/${DRONE_COMMIT_SHA}/g" | sed "s/__BUILDNUM__/${DRONE_BUILD_NUMBER}/g" | sed "s/__DEPLOY_TYPE__//g" |  sed "s/__TAG__/`./cuttags.sh`/g" > build_data.yml
+      - cat build_data.yml.template | sed "s/__BRANCH__/HEAD/g" | sed "s/__SHA__/${DRONE_COMMIT_SHA}/g" | sed "s/__BUILDNUM__/${DRONE_BUILD_NUMBER}/g" | sed "s/__DEPLOY_TYPE__//g" |  sed "s/__TAG__/`./cuttags.sh`/g" > build_data.yml
     when:
       event: [ tag ]
   setup-builddata-alpha:
     image: g3dev/nodedev:${NODE_VERSION}
     commands:
-    - cat build_data.yml.template | sed "s/__BRANCH__/`git rev-parse --abbrev-ref HEAD`/g" | sed "s/__SHA__/${DRONE_COMMIT_SHA}/g" | sed "s/__BUILDNUM__/${DRONE_BUILD_NUMBER}/g" | sed "s/__DEPLOY_TYPE__/ALPHA-/g" |  sed "s/__TAG__/`git describe --abbrev=0 --tags | cut -d\- -f1`/g" > build_data.yml
+      - cat build_data.yml.template | sed "s/__BRANCH__/`git rev-parse --abbrev-ref HEAD`/g" | sed "s/__SHA__/${DRONE_COMMIT_SHA}/g" | sed "s/__BUILDNUM__/${DRONE_BUILD_NUMBER}/g" | sed "s/__DEPLOY_TYPE__/ALPHA-/g" |  sed "s/__TAG__/`git describe --abbrev=0 --tags | cut -d\- -f1`/g" > build_data.yml
     when:
       event: [ pull_request, push, deployment ]
   build-dockerfile:
