@@ -57,7 +57,6 @@ workflows:
             branches:
               only:
                 - /(.*\/)?[eE][sS]-.*/
-                - /(.*\/)?feature.*/
                 - master
       - build_container:
           context: estatespace
@@ -65,9 +64,6 @@ workflows:
             branches:
               only:
                 - /(.*\/)?[eE][sS]-.*/
-                - /(.*\/)?feature.*/
                 - master
-            tags:
-              only: /.*/
           requires:
             - lintmd
