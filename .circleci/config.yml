@@ -45,21 +45,6 @@ jobs:
           root: .
           paths:
             - ./*
-#  build_code:
-#    docker:
-#      - image: 540619935031.dkr.ecr.us-east-1.amazonaws.com/nodedev:master
-#        aws_auth:
-#          aws_access_key_id: $STAGING_AWS_ACCESS_KEY_ID
-#          aws_secret_access_key: $STAGING_AWS_SECRET_ACCESS_KEY
-#    steps:
-#      - attach_workspace:
-#          at: ./
-#      - *set_environment_variables
-#      - run: npm install
-#      - persist_to_workspace:
-#          root: .
-#          paths:
-#            - ./*
   build_container:
     docker:
       - image: quay.io/reactiveops/ci-images:v8.0-alpine
@@ -81,10 +66,6 @@ workflows:
           context: estatespace
       - checkout_code:
           context: estatespace
-#      - build_code:
-#          context: estatespace
-#          requires:
-#            - checkout_code
       - build_container:
           context: estatespace
           filters:
@@ -97,4 +78,3 @@ workflows:
               only: /.*/
           requires:
             - checkout_code
-#            - build_code
