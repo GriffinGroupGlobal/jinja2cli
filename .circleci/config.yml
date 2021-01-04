@@ -32,27 +32,16 @@ jobs:
     steps:
       - checkout
       - run: runlintmd.sh
-  checkout_code:
-    docker:
-      - image: 540619935031.dkr.ecr.us-east-1.amazonaws.com/nodedev:master
-        aws_auth:
-          aws_access_key_id: $STAGING_AWS_ACCESS_KEY_ID
-          aws_secret_access_key: $STAGING_AWS_SECRET_ACCESS_KEY
-    steps:
-      - *set_environment_variables
-      - checkout
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./*
+
   build_container:
     docker:
       - image: quay.io/reactiveops/ci-images:v8.0-alpine
     steps:
       - attach_workspace:
           at: .
-      - *set_environment_variables
+      - checkout
       - setup_remote_docker
+      - *set_environment_variables
       - *docker_build_and_push
     environment:
       ROK8S_CONFIG: deploy/build.config
@@ -64,8 +53,12 @@ workflows:
     jobs:
       - lintmd:
           context: estatespace
-      - checkout_code:
-          context: estatespace
+          filters:
+            branches:
+              only:
+                - /(.*\/)?[eE][sS]-.*/
+                - /(.*\/)?feature.*/
+                - master
       - build_container:
           context: estatespace
           filters:
@@ -77,4 +70,4 @@ workflows:
             tags:
               only: /.*/
           requires:
-            - checkout_code
+            - lintmd
