@@ -35,5 +35,3 @@ Note: Using ENV variables instead of command line variables. Named parameters ar
 # Credits
 - [docker-jinja2cli](https://hub.docker.com/r/vikingco/jinja2cli/)
 - [jinja-2cli](https://github.com/mattrobenolt/jinja2-cli)
-
-[drone]:https://docs.drone.io
