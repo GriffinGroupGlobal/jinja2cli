@@ -22,7 +22,7 @@ DATA2: Dogs are great!
 Then you can render this template by executing
 
 ```text
-$ docker run --rm -v `pwd`:/data --workdir=/data -e PLUGIN_TEMPLATE=template.j2 -e PLUGIN_DATA=data.yml -e PLUGIN_OUTFILE=out g3dev/jinja2cli
+$ docker run --rm -v `pwd`:/data --workdir=/data -e PLUGIN_TEMPLATE=template.j2 -e PLUGIN_DATA=data.yml -e PLUGIN_OUTFILE=out git push --set-upstream origin 540619935031.dkr.ecr.us-east-1.amazonaws.com/jinja2cli:master
 $ cat out
 My Title
 ```
