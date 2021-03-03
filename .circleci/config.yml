@@ -35,7 +35,7 @@ jobs:
 
   build_container:
     docker:
-      - image: quay.io/reactiveops/ci-images:v8.0-alpine
+      - image: 540619935031.dkr.ecr.us-east-1.amazonaws.com/fairwinds-ci-image:v8.0-alpine
     steps:
       - attach_workspace:
           at: .
