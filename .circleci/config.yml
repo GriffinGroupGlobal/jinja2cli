@@ -35,7 +35,10 @@ jobs:
 
   build_container:
     docker:
-      - image: quay.io/reactiveops/ci-images:v8.0-alpine
+      - image: 540619935031.dkr.ecr.us-east-1.amazonaws.com/fairwinds-ci-image:v8.0-alpine
+        aws_auth:
+          aws_access_key_id: $STAGING_AWS_ACCESS_KEY_ID
+          aws_secret_access_key: $STAGING_AWS_SECRET_ACCESS_KEY
     steps:
       - attach_workspace:
           at: .
